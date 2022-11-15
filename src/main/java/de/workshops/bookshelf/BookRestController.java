@@ -63,6 +63,7 @@ public class BookRestController {
 
     @PostMapping
     ResponseEntity<Book> createBook(@RequestBody Book book) {
-        return ResponseEntity.created(null).body(book);
+        var savedBook = service.createBook(book);
+        return ResponseEntity.created(null).body(savedBook);
     }
 }

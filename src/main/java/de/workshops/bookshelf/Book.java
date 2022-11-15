@@ -1,12 +1,28 @@
 package de.workshops.bookshelf;
 
-import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    long id;
+
     String title;
     String description;
     String author;
     String isbn;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -40,26 +56,15 @@ class Book {
         this.isbn = isbn;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return Objects.equals(title, book.title) && Objects.equals(description, book.description) && Objects.equals(author, book.author) && Objects.equals(isbn, book.isbn);
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        Book book = (Book) object;
+        return id == book.id && java.util.Objects.equals(title, book.title) && java.util.Objects.equals(description, book.description) && java.util.Objects.equals(author, book.author) && java.util.Objects.equals(isbn, book.isbn);
     }
 
-    @Override
     public int hashCode() {
-        return Objects.hash(title, description, author, isbn);
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", author='" + author + '\'' +
-                ", isbn='" + isbn + '\'' +
-                '}';
+        return java.util.Objects.hash(super.hashCode(), id, title, description, author, isbn);
     }
 }
