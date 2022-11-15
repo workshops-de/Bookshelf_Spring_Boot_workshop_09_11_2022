@@ -2,6 +2,7 @@ package de.workshops.bookshelf;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -9,6 +10,9 @@ class BookRestControllerRestAssuredTest {
 
     @LocalServerPort
     int port;
+
+    @Value("${server.port}")
+    int serverPort;
 
     @Test
     void shouldGetBookByIsbn() {

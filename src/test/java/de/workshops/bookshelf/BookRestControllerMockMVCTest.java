@@ -8,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles({"test"})
 class BookRestControllerMockMVCTest {
 
     @Autowired
@@ -27,6 +30,7 @@ class BookRestControllerMockMVCTest {
     MockMvc mockMvc;
 
     @Test
+    @EnabledIf(expression = "#{environment['spring.profiles.active'] == 'test'}", loadContext = true)
     void shouldGetAllBooksFromBookshelf() throws Exception {
         final var mvcResult = mockMvc.perform(get("/book"))
                 .andReturn();
