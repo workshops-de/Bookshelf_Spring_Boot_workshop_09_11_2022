@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.security.test.context.support.WithMockUser;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookRestControllerRestAssuredTest {
 
@@ -18,6 +20,7 @@ class BookRestControllerRestAssuredTest {
     void shouldGetBookByIsbn() {
         RestAssured.given()
                 .log().all()
+                .auth().basic("dbUser", "password")
                 .when()
                 .get("http://localhost:" + port + "/book/978-3826655487")
                 .then()

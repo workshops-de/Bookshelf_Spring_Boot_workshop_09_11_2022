@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,6 +43,24 @@ class BookRestControllerMockMVCTest {
     }
 
     @Test
+    @WithMockUser
+    void shouldCreateNewBook_forbidden() throws Exception {
+        final var mvcResult = mockMvc.perform(post("/book")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {
+                            "title": "My first book",
+                            "description": "Wish I had written it much earlier",
+                            "author": "Birgit Kratz",
+                            "isbn": "111-1111111"
+                            }
+                        """))
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
+    }
+    @Test
+    @WithMockUser(roles = {"ADMIN"})
     void shouldCreateNewBook() throws Exception {
         final var mvcResult = mockMvc.perform(post("/book")
                         .contentType(MediaType.APPLICATION_JSON)
